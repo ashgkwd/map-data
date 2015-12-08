@@ -25,13 +25,30 @@
   <script src="http://maps.metastudio.org/lib/pouchdb/pouchdb-5.1.0.min.js"></script>
   <script>
   var map = L.map('map');
+
+  var doMark = function(m) {
+  	L.marker([m.lat, m.lng])
+  		.bindPopup('Hi')
+  		.addTo(map);
+  };
+
+  var undoMark = function(m) {
+  	// TODO
+  };
   
 
   // init
   navigator.geolocation.getCurrentPosition(function(d) {
     map.setView([d.coords.latitude, d.coords.longitude], 13);
   	L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-  })
+
+  	map.on('contextmenu', function(e) {
+  		console.log('CLICKED', e);
+
+  		// TODO : put in db
+  		 doMark(e.latlng);
+  	});
+  });
   </script>
 
 </body>
