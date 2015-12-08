@@ -37,13 +37,13 @@
   <script src="http://maps.metastudio.org/lib/leaflet/Leaflet-1.0.0-b2/leaflet.js"></script>
   <script src="http://maps.metastudio.org/lib/pouchdb/pouchdb-5.1.0.min.js"></script>
   <script>
-  var map = L.map('map');
-  var lastMarker = null;
-  var form = document.querySelector("#form")
-  var isFormVisible = false;
+    var map = L.map('map');
+    var lastMarker = null;
+    var form = document.querySelector("#form")
+    var isFormVisible = false;
 
-  var doMark = function(m) {
-  	lastMarker = L.marker([m.lat, m.lng])
+    var doMark = function(m) {
+     lastMarker = L.marker([m.lat, m.lng])
   		// .bindPopup('Hi')
   		.on('click', function(e) {
   			if(!isFormVisible) {
@@ -59,30 +59,71 @@
   			}
   		})
   		.addTo(map);
-  };
+    };
 
-  var undoMark = function(m) {
+    var undoMark = function(m) {
   	// TODO
   	if (lastMarker) {
   		map.removeLayer(lastMarker);
   		lastMarker = null;
   	}
   };
-  
+
+  // PouchDB
+  var db = new PouchDB('map-data');
+
+  function add_data(loc){
+
+    function getUniqueID(){
+
+      function _p8(s) {
+        var p = (Math.random().toString(16)+"000000000").substr(2,8);
+        return s ? "-" + p.substr(0,4) + "-" + p.substr(4,4) : p ;
+      }
+      return _p8() + _p8(true) + _p8(true) + _p8();
+    }
+
+    //Store information into database
+    db.put({
+      _id: getUniqueID(), 
+      lat: loc.lat,
+      lng: loc.lng,
+      descp: loc.descp
+
+    });
+}
+
+  function show_data(){
+
+    //Read form the database
+    db.allDocs().then(function(a) {
+
+      a.rows.forEach(function(key){
+
+        db.get(key.id).then(function(obj){
+
+          console.log('Latitude : '+ obj.lat +', Longitude : '+ obj.lng)
+          // L.circleMarker([obj.lat, obj.lng]).bindPopup(obj.lat ,obj.lng).addTo(map)
+        })
+      })
+    })
+
+  }
+
 
   // init
   navigator.geolocation.getCurrentPosition(function(d) {
     map.setView([d.coords.latitude, d.coords.longitude], 13);
-  	L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-  	map.on('contextmenu', function(e) {
-  		console.log('CLICKED', e);
-  		undoMark();
+    map.on('contextmenu', function(e) {
+      console.log('CLICKED', e);
+      undoMark();
   		// TODO : put in db
-  		 doMark(e.latlng);
-  	});
+     doMark(e.latlng);
+   });
   });
-  </script>
+</script>
 
 </body>
 <html>
