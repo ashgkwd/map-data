@@ -47,11 +47,15 @@
   		// .bindPopup('Hi')
   		.on('click', function(e) {
   			if(!isFormVisible) {
-  				form.classList.remove("hide").add("show");
+  				form.classList.remove("hide");
+  				form.classList.add("show");
   				isFormVisible = true;
   				console.log(form.classList)
   			} else {
-  				// form.show();
+  				form.classList.remove("show");
+  				form.classList.add("hide");
+  				isFormVisible = false;
+  				console.log(form.classList)
   			}
   		})
   		.addTo(map);
