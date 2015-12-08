@@ -24,6 +24,14 @@
   <script src="http://maps.metastudio.org/lib/leaflet/Leaflet-1.0.0-b2/leaflet.js"></script>
   <script src="http://maps.metastudio.org/lib/pouchdb/pouchdb-5.1.0.min.js"></script>
   <script>
+  var map = L.map('map');
+  
+
+  // init
+  navigator.geolocation.getCurrentPosition(function(d) {
+    map.setView([d.coords.latitude, d.coords.longitude], 13);
+  	L.tileLayer('http://a.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+  })
   </script>
 
 </body>
