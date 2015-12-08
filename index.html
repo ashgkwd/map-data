@@ -25,15 +25,20 @@
   <script src="http://maps.metastudio.org/lib/pouchdb/pouchdb-5.1.0.min.js"></script>
   <script>
   var map = L.map('map');
+  var lastMarker = null;
 
   var doMark = function(m) {
-  	L.marker([m.lat, m.lng])
+  	lastMarker = L.marker([m.lat, m.lng])
   		.bindPopup('Hi')
   		.addTo(map);
   };
 
   var undoMark = function(m) {
   	// TODO
+  	if (lastMarker) {
+  		map.removeLayer(lastMarker);
+  		lastMarker = null;
+  	}
   };
   
 
@@ -44,7 +49,7 @@
 
   	map.on('contextmenu', function(e) {
   		console.log('CLICKED', e);
-
+  		undoMark();
   		// TODO : put in db
   		 doMark(e.latlng);
   	});
