@@ -1,0 +1,24 @@
+{
+  "name": "map-data",
+  "version": "1.0.0",
+  "description": "Building map app at HBSC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ashgkwd/map-data.git"
+  },
+  "keywords": [
+    "Map",
+    "Data",
+    "HomiBhabha"
+  ],
+  "author": "Ashish Gaikwad <ash.gkwd@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ashgkwd/map-data/issues"
+  },
+  "homepage": "https://github.com/ashgkwd/map-data"
+}
